@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax_xmlEx</title>
+    <style>
+        table{margin: 0 auto; border: 3px solid rgb(160, 0, 0);border-collapse: collapse;}
+        td{border: 1px solid gray;text-align: center;}
+        
+    </style>
+    <script>
+        window.addEventListener("DOMContentLoaded", function(){
+            document.querySelector("button").onclick = function () {
+                var xhr = new XMLHttpRequest();
+
+                xhr.onload = function(){
+                    if(xhr.status == 200){
+
+                        var data = xhr.responseXML;
+
+                        var years = data.querySelectorAll("year");
+                        var names = data.querySelectorAll("name");
+                        var engNames = data.querySelectorAll("engName");
+
+                        
+                        var str ="";
+                        
+                        for(let i = 0; i< names.length;i++){
+                            var tr = document.createElement("tr");
+                            if(years[i].innerHTML == "2008"){
+                                str = "<td rowspan ='2'>"+years[i].textContent+"</td>"+ "<td>"+names[i].textContent+"<br>"+engNames[i].textContent+"</td>" 
+                                tr.innerHTML = str;
+                                document.querySelector("table").append(tr);
+                                console.log(years[i].innerHTML);    
+                            }else{
+                            str = "<td>"+years[i].textContent+"</td>"+ "<td>"+names[i].textContent+"<br>"+engNames[i].textContent+"</td>" 
+                            tr.innerHTML = str;
+                            document.querySelector("table").append(tr);
+                            console.log(years[i].innerHTML);
+                            }
+                        }
+
+                        
+
+                    }
+                }
+                xhr.open("get","http://localhost:8080/myweb/movie.xml",true);
+                xhr.send();
+
+            };
+        })
+    </script>
+</head>
+<body>
+    <table>
+        <h1>인피니티 사가</h1>
+    </table>
+    <button>버튼</button>
+</body>
+</html>
