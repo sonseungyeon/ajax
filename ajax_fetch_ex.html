@@ -40,8 +40,14 @@
                         director.push(movie.director);
                         status.push(movie.status);
                     }
+                    var div = document.querySelector("div");
+
+                    div.innerText = "";
 
                     var table = document.createElement("table");
+
+                    div.append(table);
+
                     table.innerHTML = "<tr>" 
                                         + "<th class='deepRed'>" + "연도" + "</th>" 
                                         + "<th class='deepRed'>" + "제목" + "<br>" + "원제" + "</th>" 
@@ -55,7 +61,7 @@
                         
                                         
                     document.querySelector("body").append(table);
-
+                                        
                     //테이블 데이터 만들기
                     
                     table.innerHTML +="<tr>"
@@ -70,9 +76,10 @@
                         document.querySelector("table").append(tr);
                     
                     }
-                    str = "<td rowspan='6'>"+status[0]+"</td>";
-                    tr.innerHTML = str;
-                    document.querySelectorAll("tr")[4].append(tr);
+                    var td = document.createElement("td");
+                    td.rowSpan= 6;
+                    td.innerHTML = status[0];
+                    document.querySelectorAll("tr")[3].append(td);
                 
                     table.innerHTML +="<tr>"
                                         + "<td class='redPink' colspan ='4'>" + "페이즈2" + "</td>" 
@@ -86,8 +93,10 @@
                         document.querySelector("table").append(tr);
                         
                     }
-                    str = "<td rowspan='6'>"+status[0]+"</td>";
-                    document.querySelectorAll("tr")[11].append(str);
+                    var td = document.createElement("td");
+                    td.rowSpan= 6;
+                    td.innerHTML = status[0];
+                    document.querySelectorAll("tr")[10].append(td);
                 })
                 .catch((error)=>console.log("error",error));
             });
@@ -129,9 +138,6 @@
                                     + "<tr>"
                                         + "<th class='whitePink' colspan ='4'>" + "인피니티 사가" + "</th>" 
                                     + "</tr>";
-                    
-                        
-                                        
                     document.querySelector("body").append(table);
 
                     //테이블 데이터 만들기
@@ -147,6 +153,10 @@
                         tr.innerHTML = str;
                         document.querySelector("table").append(tr);
                     }
+                    var td = document.createElement("td");
+                    td.rowSpan = 6;
+                    td.innerHTML = status[0];
+                    document.querySelectorAll("tr")[3].append(td);
                 })
                 .catch((error)=>console.log("error",error));
             });
@@ -206,6 +216,12 @@
                         tr.innerHTML = str;
                         document.querySelector("table").append(tr);
                     }
+                    var td = document.createElement("td");
+                    td.rowSpan = 6;
+                    td.innerHTML = status[6];
+                    document.querySelectorAll("tr")[3].append(td);
+
+                    table.innerHTML= "";
                 })
                 .catch((error)=>console.log("error",error));
             });
@@ -218,6 +234,7 @@
         <button id="allMovie">모든 영화</button>
         <button id="phase1">페이즈 1</button>
         <button id="phase2">페이즈 2</button>
+        <div></div>
     </span>
 </body>
 </html>
