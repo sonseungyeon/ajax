@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax_student.html</title>
+    <script>
+        window.addEventListener("DOMContentLoaded",function(){
+            document.querySelector("button").onclick = function(){
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function(){
+
+                    if(xhr.readyState == 4){
+
+                        if(xhr.status == 200){
+                            var resp = xhr.responseText;
+                            if(document.querySelector("div")!=null){
+                                document.querySelector("div").remove();
+                            }
+                            var student = JSON.parse(resp);
+                            var d = document.createElement("div");
+                            var myClass01Kor = 0; var myClass01Eng = 0; var myClass01Math = 0;
+                            var myClass02Kor = 0; var myClass02Eng = 0; var myClass02Math = 0;
+                            var myClass03Kor = 0; var myClass03Eng = 0; var myClass03Math = 0;
+
+                            //1반
+                            for(const s0 of student[0].myClass01){
+                                
+                                myClass01Kor += s0.kor
+                                myClass01Eng += s0.eng
+                                myClass01Math += s0.math
+                            }
+                            var myClass01KorAvr = (myClass01Kor/3).toFixed();
+                            var myClass01EngAvr = (myClass01Eng/3).toFixed();
+                            var myClass01MathAvr = (myClass01Math/3).toFixed();
+                            var myClass01Avr = ((myClass01Kor + myClass01Eng + myClass01Math)/3).toFixed();
+
+                            //1반 각 과목총점과 평균 출력
+                            d.innerHTML += "myClass01반" + "<br>";
+                            d.innerHTML += "국어총점 : " + myClass01Kor + "  " + "국어평균 : " + myClass01KorAvr + "<br>";
+                            d.innerHTML += "영어총점 : " + myClass01Eng + "  " + "영어평균 : " + myClass01EngAvr + "<br>";
+                            d.innerHTML += "수학총점 : " + myClass01Math + "  " + "수학평균 : " + myClass01MathAvr + "<br>";
+                            d.innerHTML += "총 과목평균 : " + myClass01Avr + "<br>" + "<br>";
+                            document.querySelector("body").append(d);
+
+                            //2반
+                            for(const s0 of student[1].myClass02){
+                                myClass02Kor += s0.kor
+                                myClass02Eng += s0.eng
+                                myClass02Math += s0.math
+                            }
+                            var myClass02KorAvr = (myClass02Kor/3).toFixed();
+                            var myClass02EngAvr = (myClass02Eng/3).toFixed();
+                            var myClass02MathAvr = (myClass02Math/3).toFixed();
+                            var myClass02Avr = ((myClass02Kor + myClass02Eng + myClass02Math)/3).toFixed();
+
+                            //2반 각 과목총점과 평균 출력
+                            d.innerHTML += "myClass02반" + "<br>";
+                            d.innerHTML += "국어총점 : " + myClass02Kor + "  " + "국어평균 : " + myClass02KorAvr + "<br>";
+                            d.innerHTML += "영어총점 : " + myClass02Eng + "  " + "영어평균 : " + myClass02EngAvr + "<br>";
+                            d.innerHTML += "수학총점 : " + myClass02Math + "  " + "수학평균 : " + myClass02MathAvr + "<br>";
+                            d.innerHTML += "총 과목평균 : " + myClass02Avr + "<br>"+"<br>";
+                            document.querySelector("body").append(d);
+
+                            //3반
+                            for(const s0 of student[2].myClass03){
+                                myClass03Kor += s0.kor
+                                myClass03Eng += s0.eng
+                                myClass03Math += s0.math
+                            }
+                            var myClass03KorAvr = (myClass03Kor/3).toFixed();
+                            var myClass03EngAvr = (myClass03Eng/3).toFixed();
+                            var myClass03MathAvr = (myClass03Math/3).toFixed();
+                            var myClass03Avr = ((myClass03Kor + myClass03Eng + myClass03Math)/3).toFixed();
+
+                            //3반 각 과목총점과 평균 출력
+                            d.innerHTML += "myClass03반" + "<br>";
+                            d.innerHTML += "국어총점 : " + myClass03Kor + "  " + "국어평균 : " + myClass03KorAvr + "<br>";
+                            d.innerHTML += "영어총점 : " + myClass03Eng + "  " + "영어평균 : " + myClass03EngAvr + "<br>";
+                            d.innerHTML += "수학총점 : " + myClass03Math + "  " + "수학평균 : " + myClass03MathAvr + "<br>";
+                            d.innerHTML += "총 과목평균 : " + myClass03Avr + "<br>"+"<br>";
+                            document.querySelector("body").append(d);
+
+                            //국어 과목 평균 가장 높은반 출력
+                            if(myClass03KorAvr>myClass02KorAvr && myClass03KorAvr>myClass01KorAvr){
+                                d.innerHTML += "국어 과목 평균이 높은반 : myClass03반" + "<br>";
+                                document.querySelector("body").append(d);
+                            }else if(myClass02KorAvr>myClass03KorAvr && myClass02KorAvr>myClass01KorAvr){
+                                d.innerHTML += "국어 과목 평균이 높은반 : myClass02반" + "<br>";
+                                document.querySelector("body").append(d);
+                            }else if(myClass01KorAvr>myClass02KorAvr && myClass01KorAvr>myClass03KorAvr){
+                                d.innerHTML += "국어 과목 평균이 높은반 : myClass01반" + "<br>";
+                                document.querySelector("body").append(d);
+                            }
+                            //영어 과목 평균 가장 높은반 출력
+                            if(myClass03EngAvr>myClass02EngAvr && myClass03EngAvr>myClass01EngAvr){
+                                d.innerHTML += "영어 과목 평균이 높은반 : myClass03반" + "<br>";
+                                document.querySelector("body").append(d);
+                            }else if(myClass02EngAvr>myClass03EngAvr && myClass02EngAvr>myClass01EngAvr){
+                                d.innerHTML += "영어 과목 평균이 높은반 : myClass02반" + "<br>";
+                                document.querySelector("body").append(d);
+                            }else if(myClass01EngAvr>myClass02EngAvr && myClass01EngAvr>myClass03EngAvr){
+                                d.innerHTML += "영어 과목 평균이 높은반 : myClass01반" + "<br>";
+                                document.querySelector("body").append(d);
+                            }
+                            //수학 과목 평균 가장 높은반 출력
+                            if(myClass03MathAvr>myClass02MathAvr && myClass03MathAvr>myClass01MathAvr){
+                                d.innerHTML += "수학 과목 평균이 높은반 : myClass03반" + "<br>";
+                                document.querySelector("body").append(d);
+                            }else if(myClass02MathAvr>myClass03MathAvr && myClass02MathAvr>myClass01MathAvr){
+                                d.innerHTML += "수학 과목 평균이 높은반 : myClass02반" + "<br>";
+                                document.querySelector("body").append(d);
+                            }else if(myClass01MathAvr>myClass02MathAvr && myClass01MathAvr>myClass03MathAvr){
+                                d.innerHTML += "수학 과목 평균이 높은반 : myClass01반" + "<br>";
+                                document.querySelector("body").append(d);
+                            }
+                            //총 과목 평균 가장 높은반 출력
+                            if(myClass03Avr>myClass02Avr && myClass03Avr>myClass01Avr){
+                                d.innerHTML += "총 과목 평균이 높은반 : myClass03반";
+                                document.querySelector("body").append(d);
+                            }else if(myClass02Avr>myClass03Avr && myClass02Avr>myClass01Avr){
+                                d.innerHTML += "총 과목 평균이 높은반 : myClass02반";
+                                document.querySelector("body").append(d);
+                            }else if(myClass01Avr>myClass02Avr && myClass01Avr>myClass03Avr){
+                                d.innerHTML += "총 과목 평균이 높은반 : myClass01반";
+                                document.querySelector("body").append(d);
+                            }
+                        } else {}
+                    }
+                }
+                xhr.open("get","http://localhost:8080/myweb/student.json",true);
+                xhr.send();
+                
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>oo학교 1학년 성적</h1>
+    <button>각반 성적 확인버튼</button>
+</body>
+</html>
+
+<!-- //숙제
+//json으로
+//학생 한명이 갖는 정보 : name, kor, eng, math
+//[{[{},{},{}]},{[{},{},{}]},{[{},{},{}]}]
+//{myClass01 : [학생3명]}
+//myClass02 : [학생3명]
+//myClass03 : [학생3명]
+//
+//버튼 클릭 시
+//각반의 총점과 평균을 구해서 출력
+//평균이 가장 높은 반은 어떤반인지 출력 -->
