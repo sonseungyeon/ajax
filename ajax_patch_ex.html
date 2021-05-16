@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>마블 시네마틱 유니버스</title>
+    <style>
+        table{margin-top:10px;width:1000px ;border: 1px solid silver; border-collapse: collapse; margin: 0 auto;}
+        .deepRed{color:white;background-color: rgb(189, 1, 1);border: 1px solid silver;padding-top: 5px;padding-bottom: 5px;font-size:x-large}
+        .whitePink{color:white;background-color:rgb(214, 90, 90);border: 1px solid silver;padding-top: 5px;padding-bottom: 5px;font-size:x-large}
+        .redPink{color:white;background-color:rgb(252, 44, 44);border: 1px solid silver;padding-top: 5px;padding-bottom: 5px;font-size:large}
+        .blue{color: rgb(25, 130, 216);font-size:large}
+        td{text-align: center;border: 1px solid silver;font-size:large}
+        span{margin: 0 auto;vertical-align:middle;}
+        h1{margin-top:-5px;margin-bottom:-5px;text-align: center;}
+    </style>
+    <script>
+        window.addEventListener("DOMContentLoaded",function(){
+            //모든 영화
+            document.querySelector("#allMovie").onclick = (function(){
+                fetch("http://localhost:8080/myweb/marvel_movie.json",{
+                    method:"get"
+                })
+                .then((response)=>{
+                    return response.json();
+                })
+                .then((result)=>{
+                    var movieObject = result;
+                    var phase = [];
+                    var year = [];
+                    var titleKor = [];
+                    var titleEng = [];
+                    var director = [];
+                    var status = [];
+                    
+                    for(const movie of movieObject){
+                        phase.push(movie.phase);
+                        year.push(movie.year);
+                        titleKor.push(movie.titleKor);
+                        titleEng.push(movie.titleEng);
+                        director.push(movie.director);
+                        status.push(movie.status);
+                    }
+                    // var div = document.querySelector("div");
+                    // div.innerText = "";
+                    // div.append(table);
+
+                    var table = document.createElement("table");
+                    table.innerHTML = "<tr>" 
+                                        + "<th class='deepRed'>" + "연도" + "</th>" 
+                                        + "<th class='deepRed'>" + "제목" + "<br>" + "원제" + "</th>" 
+                                        + "<th class='deepRed'>" + "감독" + "</th>" 
+                                        + "<th class='deepRed'>" + "상태" + "</th>" 
+                                    + "</tr>" 
+                                    + "<tr>"
+                                        + "<th class='whitePink' colspan ='4'>" + "인피니티 사가" + "</th>" 
+                                    + "</tr>"
+                                    +"<tr>"
+                                        + "<td class='redPink' colspan ='4'>" + "페이즈1" + "</td>" 
+                                    + "</tr>";
+                    document.querySelector("body").append(table);
+
+                    //영화 (연도, 제목, 감독) 데이터들을 innerHTML로 넣기위한 코드
+                    for(let i =0; i<6;i++){
+                        var tr = document.createElement("tr");
+                        var cnt=1;
+                        var k=1;
+
+                        for(let j=0;j<6;j++){
+                            //year[i] 와 year[j]번째 데이터가 같을 경우를 비교한다. ex) year[i](2008) == year[j](2008)
+                            if (year[i] == year[j]){
+                                //i와 j가 같은경우는 연도 1번째와 1번째를 비교하면 안되기 때문에 같은경우 continue를 쓴다.
+                                if(i==j){
+                                    continue;
+                                //i와 j가 다른데 데이터가 같을 경우 카운트 1증가 한다.
+                                }else{
+                                    cnt++;
+                                    continue;
+                                }
+                            }
+
+                            //카운트가 1인 경우는 일치하는 연도가 없다는 것이기 때문에 rowspan을 하지 않고 데이터를 넣는다.
+                            if(cnt==1){
+                                str = "<td>"+year[i]+"</td>"+"<td>"+"<span class='blue'>"+"<b>"+titleKor[i]+"</b>"+"</span>"+"<br>"
+                                +titleEng[i]+"</td>"+"<td>"+director[i]+"</td>";
+                                tr.innerHTML = str;
+                                document.querySelector("table").append(tr);
+                            //카운트가 2인 경우는 비교하는연도를 제외하고 일치하는 연도가 1개 있다는 것이므로 rowspan='2'를 하여 데이터를 넣는다.
+                            }else if(cnt==2){
+                                str = "<td rowspan ='2'>"+year[i]+"</td>"+"<td>"+"<span class='blue'>"+"<b>"+titleKor[i]+"</b>"+"</span>"+"<br>"
+                                +titleEng[i]+"</td>"+"<td>"+director[i]+"</td>";
+                                tr.innerHTML = str;
+                                document.querySelector("table").append(tr);
+                            //카운트가 3인 경우는 비교하는연도를 제외하고 일치하는 연도가 2개 있다는 것이므로 rowspan='3'를 하여 데이터를 넣는다.
+                            }else if(cnt==3){
+                                str = "<td rowspan ='3'>"+year[i]+"</td>"+"<td>"+"<span class='blue'>"+"<b>"+titleKor[i]+"</b>"+"</span>"+"<br>"
+                                +titleEng[i]+"</td>"+"<td>"+director[i]+"</td>";
+                                tr.innerHTML = str;
+                                document.querySelector("table").append(tr);
+                            }
+                        }
+                    }
+
+                    var td = document.createElement("td");
+                    td.rowSpan= 6;
+                    td.innerHTML = status[0];
+                    document.querySelectorAll("tr")[3].append(td);
+                
+                    table.innerHTML +="<tr>"
+                                        + "<td class='redPink' colspan ='4'>" + "페이즈2" + "</td>" 
+                                    + "</tr>";
+
+                    //영화 (연도, 제목, 감독) 데이터들을 innerHTML로 넣기위한 코드
+                    for(let i =6; i<12;i++){
+                        var tr = document.createElement("tr");
+                        var cnt=1;
+                        var k=1;
+
+                        for(let j=6;j<12;j++){
+                            //year[i] 와 year[j]번째 데이터가 같을 경우를 비교한다. ex) year[i](2008) == year[j](2008)
+                            if (year[i] == year[j]){
+                                //i와 j가 같은경우는 연도 1번째와 1번째를 비교하면 안되기 때문에 같은경우 continue를 쓴다.
+                                if(i==j){
+                                    continue;
+                                //i와 j가 다른데 데이터가 같을 경우 카운트 1증가 한다.
+                                }else{
+                                    cnt++;
+                                    continue;
+                                }
+                            }
+
+                            //카운트가 1인 경우는 일치하는 연도가 없다는 것이기 때문에 rowspan을 하지 않고 데이터를 넣는다.
+                            if(cnt==1){
+                                str = "<td>"+year[i]+"</td>"+"<td>"+"<span class='blue'>"+"<b>"+titleKor[i]+"</b>"+"</span>"+"<br>"
+                                +titleEng[i]+"</td>"+"<td>"+director[i]+"</td>";
+                                tr.innerHTML = str;
+                                document.querySelector("table").append(tr);
+                            //카운트가 2인 경우는 비교하는연도를 제외하고 일치하는 연도가 1개 있다는 것이므로 rowspan='2'를 하여 데이터를 넣는다.
+                            }else if(cnt==2){
+                                str = "<td rowspan ='2'>"+year[i]+"</td>"+"<td>"+"<span class='blue'>"+"<b>"+titleKor[i]+"</b>"+"</span>"+"<br>"
+                                +titleEng[i]+"</td>"+"<td>"+director[i]+"</td>";
+                                tr.innerHTML = str;
+                                document.querySelector("table").append(tr);
+                            //카운트가 3인 경우는 비교하는연도를 제외하고 일치하는 연도가 2개 있다는 것이므로 rowspan='3'를 하여 데이터를 넣는다.
+                            }else if(cnt==3){
+                                str = "<td rowspan ='3'>"+year[i]+"</td>"+"<td>"+"<span class='blue'>"+"<b>"+titleKor[i]+"</b>"+"</span>"+"<br>"
+                                +titleEng[i]+"</td>"+"<td>"+director[i]+"</td>";
+                                tr.innerHTML = str;
+                                document.querySelector("table").append(tr);
+                            }
+                        }
+                    }
+
+                    var td = document.createElement("td");
+                    td.rowSpan= 6;
+                    td.innerHTML = status[0];
+                    document.querySelectorAll("tr")[10].append(td);
+                    
+                })
+                .catch((error)=>console.log("error",error));
+            });
+
+            //페이즈1
+            document.querySelector("#phase1").onclick = (function(){
+                fetch("http://localhost:8080/myweb/marvel_movie.json",{
+                    method:"get"
+                })
+                .then((response)=>{
+                    return response.json();
+                })
+                .then((result)=>{
+                    var movieObject = result;
+                    var phase = [];
+                    var year = [];
+                    var titleKor = [];
+                    var titleEng = [];
+                    var director = [];
+                    var status = [];
+                    
+                    console.log(movieObject);
+                    for(const movie of movieObject){
+                        phase.push(movie.phase);
+                        year.push(movie.year);
+                        titleKor.push(movie.titleKor);
+                        titleEng.push(movie.titleEng);
+                        director.push(movie.director);
+                        status.push(movie.status);
+                    }
+
+                    var table = document.createElement("table");
+                    table.innerHTML = "<tr>" 
+                                        + "<th class='deepRed'>" + "연도" + "</th>" 
+                                        + "<th class='deepRed'>" + "제목" + "<br>" + "원제" + "</th>" 
+                                        + "<th class='deepRed'>" + "감독" + "</th>" 
+                                        + "<th class='deepRed'>" + "상태" + "</th>" 
+                                    + "</tr>" 
+                                    + "<tr>"
+                                        + "<th class='whitePink' colspan ='4'>" + "인피니티 사가" + "</th>" 
+                                    + "</tr>"
+                                    +"<tr>"
+                                        + "<td class='redPink' colspan ='4'>" + "페이즈1" + "</td>" 
+                                    + "</tr>";
+                    document.querySelector("body").append(table);
+
+                    //영화 (연도, 제목, 감독) 데이터들을 innerHTML로 넣기위한 코드
+                    for(let i =0; i<6;i++){
+                        var tr = document.createElement("tr");
+                        var cnt=1;
+                        var k=1;
+
+                        for(let j=0;j<6;j++){
+                            //year[i] 와 year[j]번째 데이터가 같을 경우를 비교한다. ex) year[i](2008) == year[j](2008)
+                            if (year[i] == year[j]){
+                                //i와 j가 같은경우는 연도 1번째와 1번째를 비교하면 안되기 때문에 같은경우 continue를 쓴다.
+                                if(i==j){
+                                    continue;
+                                //i와 j가 다른데 데이터가 같을 경우 카운트 1증가 한다.
+                                }else{
+                                    cnt++;
+                                    continue;
+                                }
+                            }
+
+                            //카운트가 1인 경우는 일치하는 연도가 없다는 것이기 때문에 rowspan을 하지 않고 데이터를 넣는다.
+                            if(cnt==1){
+                                str = "<td>"+year[i]+"</td>"+"<td>"+"<span class='blue'>"+"<b>"+titleKor[i]+"</b>"+"</span>"+"<br>"
+                                +titleEng[i]+"</td>"+"<td>"+director[i]+"</td>";
+                                tr.innerHTML = str;
+                                document.querySelector("table").append(tr);
+                            //카운트가 2인 경우는 비교하는연도를 제외하고 일치하는 연도가 1개 있다는 것이므로 rowspan='2'를 하여 데이터를 넣는다.
+                            }else if(cnt==2){
+                                str = "<td rowspan ='2'>"+year[i]+"</td>"+"<td>"+"<span class='blue'>"+"<b>"+titleKor[i]+"</b>"+"</span>"+"<br>"
+                                +titleEng[i]+"</td>"+"<td>"+director[i]+"</td>";
+                                tr.innerHTML = str;
+                                document.querySelector("table").append(tr);
+                            //카운트가 3인 경우는 비교하는연도를 제외하고 일치하는 연도가 2개 있다는 것이므로 rowspan='3'를 하여 데이터를 넣는다.
+                            }else if(cnt==3){
+                                str = "<td rowspan ='3'>"+year[i]+"</td>"+"<td>"+"<span class='blue'>"+"<b>"+titleKor[i]+"</b>"+"</span>"+"<br>"
+                                +titleEng[i]+"</td>"+"<td>"+director[i]+"</td>";
+                                tr.innerHTML = str;
+                                document.querySelector("table").append(tr);
+                            }
+                        }
+                    }
+
+                    var td = document.createElement("td");
+                    td.rowSpan = 6;
+                    td.innerHTML = status[0];
+                    document.querySelectorAll("tr")[3].append(td);
+                })
+                .catch((error)=>console.log("error",error));
+            });
+
+            //페이즈2
+            document.querySelector("#phase2").onclick = (function(){
+                fetch("http://localhost:8080/myweb/marvel_movie.json",{
+                    method:"get"
+                })
+                .then((response)=>{
+                    return response.json();
+                })
+                .then((result)=>{
+                    var movieObject = result;
+                    var phase = [];
+                    var year = [];
+                    var titleKor = [];
+                    var titleEng = [];
+                    var director = [];
+                    var status = [];
+                    
+                    console.log(movieObject);
+                    for(const movie of movieObject){
+                        phase.push(movie.phase);
+                        year.push(movie.year);
+                        titleKor.push(movie.titleKor);
+                        titleEng.push(movie.titleEng);
+                        director.push(movie.director);
+                        status.push(movie.status);
+                    }
+
+                    var table = document.createElement("table");
+                    table.innerHTML = "<tr>" 
+                                        + "<th class='deepRed'>" + "연도" + "</th>" 
+                                        + "<th class='deepRed'>" + "제목" + "<br>" + "원제" + "</th>" 
+                                        + "<th class='deepRed'>" + "감독" + "</th>" 
+                                        + "<th class='deepRed'>" + "상태" + "</th>" 
+                                    + "</tr>" 
+                                    + "<tr>"
+                                        + "<th class='whitePink' colspan ='4'>" + "인피니티 사가" + "</th>" 
+                                    + "</tr>"
+                                    +"<tr>"
+                                        + "<td class='redPink' colspan ='4'>" + "페이즈2" + "</td>" 
+                                    + "</tr>";
+                    document.querySelector("body").append(table);
+
+                    //영화 (연도, 제목, 감독) 데이터들을 innerHTML로 넣기위한 코드
+                    for(let i =6; i<12;i++){
+                        var tr = document.createElement("tr");
+                        var cnt=1;
+                        var k=1;
+
+                        for(let j=6;j<12;j++){
+                            //year[i] 와 year[j]번째 데이터가 같을 경우를 비교한다. ex) year[i](2008) == year[j](2008)
+                            if (year[i] == year[j]){
+                                //i와 j가 같은경우는 연도 1번째와 1번째를 비교하면 안되기 때문에 같은경우 continue를 쓴다.
+                                if(i==j){
+                                    continue;
+                                //i와 j가 다른데 데이터가 같을 경우 카운트 1증가 한다.
+                                }else{
+                                    cnt++;
+                                    continue;
+                                }
+                            }
+
+                            //카운트가 1인 경우는 일치하는 연도가 없다는 것이기 때문에 rowspan을 하지 않고 데이터를 넣는다.
+                            if(cnt==1){
+                                str = "<td>"+year[i]+"</td>"+"<td>"+"<span class='blue'>"+"<b>"+titleKor[i]+"</b>"+"</span>"+"<br>"
+                                +titleEng[i]+"</td>"+"<td>"+director[i]+"</td>";
+                                tr.innerHTML = str;
+                                document.querySelector("table").append(tr);
+                            //카운트가 2인 경우는 비교하는연도를 제외하고 일치하는 연도가 1개 있다는 것이므로 rowspan='2'를 하여 데이터를 넣는다.
+                            }else if(cnt==2){
+                                str = "<td rowspan ='2'>"+year[i]+"</td>"+"<td>"+"<span class='blue'>"+"<b>"+titleKor[i]+"</b>"+"</span>"+"<br>"
+                                +titleEng[i]+"</td>"+"<td>"+director[i]+"</td>";
+                                tr.innerHTML = str;
+                                document.querySelector("table").append(tr);
+                            //카운트가 3인 경우는 비교하는연도를 제외하고 일치하는 연도가 2개 있다는 것이므로 rowspan='3'를 하여 데이터를 넣는다.
+                            }else if(cnt==3){
+                                str = "<td rowspan ='3'>"+year[i]+"</td>"+"<td>"+"<span class='blue'>"+"<b>"+titleKor[i]+"</b>"+"</span>"+"<br>"
+                                +titleEng[i]+"</td>"+"<td>"+director[i]+"</td>";
+                                tr.innerHTML = str;
+                                document.querySelector("table").append(tr);
+                            }
+                        }
+                    }
+                    var td = document.createElement("td");
+                    td.rowSpan = 6;
+                    td.innerHTML = status[6];
+                    document.querySelectorAll("tr")[3].append(td);
+
+                })
+                .catch((error)=>console.log("error",error));
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Marvel Movie</h1><hr>
+    <span>
+        <button id="allMovie">모든 영화</button>
+        <button id="phase1">페이즈 1</button>
+        <button id="phase2">페이즈 2</button>
+        <div></div>
+    </span>
+</body>
+</html>
